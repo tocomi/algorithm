@@ -31,6 +31,77 @@ public class ParenthesisMain {
         arguments = new Arguments(parenCount, targetIndex, parens);
     }
 
+    private abstract class Parenthesis {
+
+        private String paren;
+        private String[] parensArray;
+        int targetArrayIndex;
+
+        public Parenthesis(String paren, String[] parensArray,
+                int targetArrayIndex) {
+            this.paren = paren;
+            this.parensArray = parensArray;
+            this.targetArrayIndex = targetArrayIndex;
+        }
+
+        public int findPareParenIndex() {
+            int pareCount = 1;
+            for (int i = 0; i < parensArray.length; i++) {
+                int currentIndex = getCurrentIndex(i, targetArrayIndex);
+
+                pareCount = calcPareCount(pareCount, parensArray[currentIndex]);
+                if (pareCount == 0) {
+                    return currentIndex + 1;
+                }
+            }
+            return -1;
+        }
+
+        private int calcPareCount(int pareCount, String paren) {
+            return paren.equals(this.paren) ? ++pareCount : --pareCount;
+        }
+
+        protected abstract int getCurrentIndex(int index, int targetArrayIndex);
+    }
+
+    private class LeftParenthesis extends Parenthesis {
+
+        public LeftParenthesis(String paren, String[] parensArray,
+                int targetArrayIndex) {
+            super(paren, parensArray, targetArrayIndex);
+        }
+
+        @Override
+        protected int getCurrentIndex(int index, int targetArrayIndex) {
+            return index + (targetArrayIndex + 1);
+        }
+    }
+
+    private class RightParenthesis extends Parenthesis {
+
+        public RightParenthesis(String paren, String[] parensArray,
+                int targetArrayIndex) {
+            super(paren, parensArray, targetArrayIndex);
+        }
+
+        @Override
+        protected int getCurrentIndex(int index, int targetArrayIndex) {
+            return targetArrayIndex - (index + 1);
+        }
+    }
+
+    public Parenthesis createInstance(String paren, String[] parensArray,
+            int targetArrayIndex) {
+        switch (paren) {
+        case "(":
+            return new LeftParenthesis(paren, parensArray, targetArrayIndex);
+        case ")":
+            return new RightParenthesis(paren, parensArray, targetArrayIndex);
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
+
     private class Arguments {
 
         private final int parenCount;
@@ -53,94 +124,6 @@ public class ParenthesisMain {
 
         public String getParens() {
             return parens;
-        }
-    }
-
-    private abstract class Parenthesis {
-
-        private String[] parensArray;
-        int targetArrayIndex;
-
-        public Parenthesis(String[] parensArray, int targetArrayIndex) {
-            this.parensArray = parensArray;
-            this.targetArrayIndex = targetArrayIndex;
-        }
-
-        public int findPareParenIndex() {
-            int pareCount = 1;
-            for (int i = 0; i < parensArray.length; i++) {
-                int currentIndex = getCurrentIndex(i, targetArrayIndex);
-
-                pareCount = calcPareCount(pareCount, parensArray[currentIndex]);
-                if (pareCount == 0) {
-                    return currentIndex + 1;
-                }
-            }
-            return -1;
-        }
-
-        protected abstract int getCurrentIndex(int index, int targetArrayIndex);
-
-        protected abstract int calcPareCount(int pareCount, String paren);
-    }
-
-    private class LeftParenthesis extends Parenthesis {
-
-        public LeftParenthesis(String[] parensArray, int targetArrayIndex) {
-            super(parensArray, targetArrayIndex);
-        }
-
-        @Override
-        protected int getCurrentIndex(int index, int targetArrayIndex) {
-            return index + (targetArrayIndex + 1);
-        }
-
-        @Override
-        protected int calcPareCount(int pareCount, String paren) {
-            switch (paren) {
-            case "(":
-                return ++pareCount;
-            case ")":
-                return --pareCount;
-            default:
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-
-    private class RightParenthesis extends Parenthesis {
-
-        public RightParenthesis(String[] parensArray, int targetArrayIndex) {
-            super(parensArray, targetArrayIndex);
-        }
-
-        @Override
-        protected int getCurrentIndex(int index, int targetArrayIndex) {
-            return targetArrayIndex - (index + 1);
-        }
-
-        @Override
-        protected int calcPareCount(int pareCount, String paren) {
-            switch (paren) {
-            case "(":
-                return --pareCount;
-            case ")":
-                return ++pareCount;
-            default:
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-
-    public Parenthesis createInstance(String paren, String[] parensArray,
-            int targetArrayIndex) {
-        switch (paren) {
-        case "(":
-            return new LeftParenthesis(parensArray, targetArrayIndex);
-        case ")":
-            return new RightParenthesis(parensArray, targetArrayIndex);
-        default:
-            throw new IllegalArgumentException();
         }
     }
 
