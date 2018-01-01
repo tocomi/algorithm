@@ -8,7 +8,7 @@ S.each_char.each_with_index do |char, index|
   answer = [stack.pop + 1, index + 1] if char == ')'
 
   if answer[0] == K then
-    p(answer[1]);exit if answer[0] == K
+    p(answer[1])
     exit
   elsif answer[1] == K then
     p(answer[0])
