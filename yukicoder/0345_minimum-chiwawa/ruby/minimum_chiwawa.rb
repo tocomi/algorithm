@@ -6,7 +6,8 @@ input.each_char.each_with_index do |char, index|
     cww_array.push(index)
   elsif (cww_array.length == 1 || cww_array.length == 2) && char == 'w' then
     cww_array.push(index)
-  elsif cww_array.length == 3 then
+  end
+  if cww_array.length == 3 then
     p(cww_array.last - cww_array.first + 1)
     exit
   end
