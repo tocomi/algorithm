@@ -1,16 +1,21 @@
 input = gets
-cww_array = []
+cww_idx = []
+target = ['c', 'w', 'w']
+ans = -1
 
 input.each_char.each_with_index do |char, index|
-  if cww_array.length == 0 && char == 'c' then
-    cww_array.push(index)
-  elsif (cww_array.length == 1 || cww_array.length == 2) && char == 'w' then
-    cww_array.push(index)
+  # when already 'c' found, overwrite index
+  if char == 'c' && cww_idx.length > 0 then
+    cww_idx = [index]
+    next
   end
-  if cww_array.length == 3 then
-    p(cww_array.last - cww_array.first + 1)
-    exit
+
+  cww_idx.push(index) if char == target[cww_idx.length]
+  
+  if cww_idx.length == 3 && (ans == -1 || ans > (cww_idx.last - cww_idx.first) + 1) then
+    ans = (cww_idx.last - cww_idx.first) + 1
+    cww_idx = []
   end
 end
 
-p(-1) if cww_array.length < 3
+p(ans)
