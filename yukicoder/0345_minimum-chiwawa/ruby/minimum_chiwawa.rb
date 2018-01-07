@@ -6,10 +6,10 @@ input.each_char.each_with_index do |char, index|
 
   cww_idx = []
   cww_idx.push(index)
-  
+
   input.each_char.each_with_index do |inner_char, inner_index|
-    next if inner_index <= index
-    cww_idx.push(inner_index) if inner_char == 'w'
+    next unless inner_index > index && inner_char == 'w'
+    cww_idx.push(inner_index)
     break if cww_idx.length >= 3
   end
 
