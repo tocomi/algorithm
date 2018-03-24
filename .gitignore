@@ -2,3 +2,6 @@
 
 .classpath
 .project
+
+# for python
+__pycache__
