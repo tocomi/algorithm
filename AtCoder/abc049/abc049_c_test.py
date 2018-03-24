@@ -3,7 +3,7 @@
 import unittest
 
 import sys
-from src import abc049_c as main
+import abc049_c as main
 
 class TestMain(unittest.TestCase):
 
